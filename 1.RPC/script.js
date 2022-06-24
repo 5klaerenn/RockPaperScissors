@@ -9,7 +9,16 @@
 
 */
 
-let userChoice = prompt("Rock, Paper or Scissors ?").toUpperCase();
+let userChoice = userSelection()
+let randomChoice = computerPlay();
+
+let userPoints = 0;
+let computerPoints = 0;
+
+function userSelection(){
+    let userChoice = prompt("Rock, Paper or Scissors ?").toUpperCase();
+    return userChoice;
+}
 
 function computerPlay() {
     let choices = ["ROCK", "PAPER", "SCISSORS"]
@@ -17,13 +26,15 @@ function computerPlay() {
     return randomChoice;
 }
 
-let randomChoice = computerPlay(); 
-
 function playRound(userChoice, randomChoice) {
     if (userChoice == randomChoice) {
+        userPoints = userPoints;
+        computerPoints = computerPoints;
         return  "It's a Tie ! Try again"; 
     } else if (userChoice == "ROCK") {
         if (randomChoice == "PAPER") {
+            userPoints - 1;
+            
             return "You Lose ! Paper beats rock";
         } else {
             return "You Win ! Rock beats Scissors";
@@ -46,6 +57,8 @@ function playRound(userChoice, randomChoice) {
 }
 
 
+
+
 console.log(userChoice);
 console.log(randomChoice);
-console.log(playRound(userChoice, randomChoice)); 
+console.log(game()); 
