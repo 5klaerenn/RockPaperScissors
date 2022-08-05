@@ -1,52 +1,91 @@
-let choices = ['ROCK', 'PAPER', 'SCISSORS'];
+//Déclarations des variables
 
+let computerChoice;
 let userChoice;
-let computerChoice; 
 
 let userPoints = 0;
 let computerPoints = 0;
+let result;
 
-let result; 
+const choices = document.querySelector('#choices');
+const btn = choices.querySelectorAll('button');
+const userDisplay = document.querySelector('#userDisplay');
+const compDisplay = document.querySelector('#compDisplay');
+const roundDisplay = document.querySelector('#roundDisplay');
+const finalDisplay = document.querySelector('#finalDisplay');
+const againCont = document.querySelector('#again');
+
+//Sélection joueuer et ordi
+btn.forEach((el) => {
+    el.addEventListener('click', () => {
+        userChoice = el.value;
+        playRound(userChoice, computerChoice);
+    }); 
+}) 
+
+function computerSelection() {
+    let choices = ['ROCK', 'PAPER', 'SCISSORS'];
+
+    return choices[Math.floor(Math.random() * choices.length)];
+}
+
+// Round
 
 function playRound(userChoice, computerChoice) {
+    computerChoice = computerSelection(); 
+
     if (userChoice == computerChoice) {
         result = "tie";
-        sendMessage(result);
+        roundDisplay.textContent = `You both chose ${computerChoice.toLowerCase()}.`
+        isGameOver();
      } else if ((userChoice == "ROCK" && computerChoice == "SCISSORS") || 
                 (userChoice == "PAPER" && computerChoice == "ROCK") || 
                 (userChoice == "SCISSORS" && computerChoice == "PAPER")) {
         result = "win"; 
-        userPoints++;
-        sendMessage(result);
+        addPoints();
+        roundDisplay.textContent = `You ${result} ! ${userChoice.toLowerCase()} beats ${computerChoice.toLowerCase()}.`
+        isGameOver();
     } else if ((userChoice == "ROCK" && computerChoice == "PAPER") || 
                (userChoice == "PAPER" && computerChoice == "SCISSORS") || 
                (userChoice == "SCISSORS" && computerChoice == "ROCK" )) {
         result = "lose";
-        computerPoints++;
-        sendMessage(result);
-    } else if (!choices.includes(userChoice)) {
-        alert(`Oops, something went wrong. ${userChoice} is not a valid entry`); 
-    };   
-}
-
-function sendMessage(result){
-    if (result === "tie") {
-        console.log(`You both chose ${computerChoice.toLowerCase()}. Score is ${userPoints} to ${computerPoints}. Try again`);
-    } else {
-        console.log(`You ${result} ! ${userChoice.toLowerCase()} beats ${computerChoice.toLowerCase()}. Score is ${userPoints} to ${computerPoints}.`);    
+        addPoints();
+        roundDisplay.textContent = `You ${result} ! ${computerChoice.toLowerCase()} beats ${userChoice.toLowerCase()}.`
+        isGameOver();
     } 
 }
 
-function playGame(){
-    for (i = 0; i < 5; i++) {
-        userChoice = prompt('Rock, Paper or Scissors ?').toUpperCase();
-        computerChoice = choices[Math.floor(Math.random() * choices.length)];
-        console.log(`Round ${i} of 5 :`)
-        playRound(userChoice, computerChoice);
-    }; 
+// Suivi du score
+
+
+function addPoints(){
+    if(result === 'win') {
+        userPoints += 1;
+        userDisplay.textContent = userPoints;
+    } else if(result === 'lose') {
+        computerPoints += 1;
+        compDisplay.textContent = computerPoints;
+    }
 }
 
+//Fin de partie
 
-console.log(playGame());
+function isGameOver(){
+    if(userPoints >= 5 && userPoints > computerPoints){
+        roundDisplay.textContent = "Game Over, You win :D ";
+        tryAgain();
+    } else if (computerPoints >= 5 && userPoints < computerPoints){
+        roundDisplay.textContent = "Game Over, You Lose :( ";
+        tryAgain();
+    }
+}
 
+function tryAgain(){
+    let againBtn = document.createElement('button');
+    againBtn.textContent = "Try Again";
+    againBtn.id = "againBtn";
+    choices.style.visibility = "hidden";
+    againCont.appendChild(againBtn);
+    againBtn.addEventListener("click", () => {window.location.reload();})
+}
 
