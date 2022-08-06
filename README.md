@@ -1,4 +1,5 @@
-#Foundations assignments from The Odin Project.
+#RockPaperScissors
+Foundations assignments from The Odin Project.
 
 
 
